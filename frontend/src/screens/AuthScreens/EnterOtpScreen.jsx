@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 import GradientButton from '../../components/GradientButton';
 import { GradientBackground } from '../../components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -65,7 +65,7 @@ const EnterOtpScreen = ({ navigation, route }) => {
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/auth/verifyemail`, {
+      const response = await axios.post(`${API_URL}/api/v1/auth/verifyemail`, {
         email,
         otp: otpString,
       });

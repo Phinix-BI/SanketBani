@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import {Background, BackButton, Logo, Header, TextInput, Button} from '../../components'
 import Toast from 'react-native-toast-message';
 import axios from 'axios'
-import { baseUrl } from '../../utils'
+import { API_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { UserContext } from '../../context/UserContext'
 
@@ -27,7 +27,7 @@ export default function VerifyAccountScreen({ navigation, route }) {
         
         try {
     
-            const response = await axios.post(`${baseUrl}/api/v1/auth/verifyemail`, {
+            const response = await axios.post(`${API_URL}/api/v1/auth/verifyemail`, {
                 email,otp
             });
             

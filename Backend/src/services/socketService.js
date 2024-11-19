@@ -1,5 +1,8 @@
 import { chatServicesController } from '../controllers/fileServicesController.js';
 import { sendMessages } from '../helpers/socketChatHandler.js';
+import ioClient from 'socket.io-client';
+
+const flaskSocket = ioClient('http://localhost:5000');
 
 export default (io) => {
     const users = new Map(); // To store user IDs and corresponding socket IDs
@@ -71,6 +74,20 @@ export default (io) => {
               sender: socket.id,
             });
           });
+        
+          socket.on("realTimeVideoFromFrontend", (data) => {
+              
+            flaskSocket.on("connect", () => {
+              console.log("Connected to Flask server");
+            });
 
+            flaskSocket.emit("realTimeVideo", data);
+
+            flaskSocket.on("frameReceived", (data) => {
+              console.log("Data from Flask server: ", data);
+              socket.emit("realTimeVideoFromBackend", data);
+            });
+
+          });
     });
 };

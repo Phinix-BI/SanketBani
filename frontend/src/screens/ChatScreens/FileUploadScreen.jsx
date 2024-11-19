@@ -3,7 +3,7 @@ import { View, Button } from 'react-native';
 import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -46,7 +46,7 @@ const FileUploadScreen = () => {
 
     try {
       const response = await axios.post(
-        `${baseUrl}/api/v1/sender/upload-media`,
+        `${API_URL}/api/v1/sender/upload-media`,
         formData,
         {
           headers: {

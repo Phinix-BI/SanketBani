@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Text} from 'react-native-paper';
 import axios from 'axios';
-import {baseUrl} from '../../utils';
+import { API_URL } from '@env';
 import {UserContext} from '../../context/UserContext'; // Import UserContext
 import {Header, SaveContactIcon} from '../../components';
 import {useFocusEffect} from '@react-navigation/native';
@@ -29,7 +29,7 @@ export default function ContactsScreen({navigation}) {
     if (userEmail) {
       try {
         const response = await axios.get(
-          `${baseUrl}/api/v1/friend/get-friends/${userEmail}`,
+          `${API_URL}/api/v1/friend/get-friends/${userEmail}`,
         );
         setContacts(response.data.data);
         setLoading(false);

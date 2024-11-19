@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { View, TextInput, Text, ActivityIndicator, TouchableOpacity, ScrollView , StatusBar } from 'react-native';
 import axios from 'axios';
 import { UserContext } from '../../context/UserContext';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 import Toast from 'react-native-toast-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { BackButton } from '../../components';
@@ -30,7 +30,7 @@ const SaveContactScreen = ({ navigation }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/friend/save-friend`, {
+      const response = await axios.post(`${API_URL}/api/v1/friend/save-friend`, {
         userName: fullName,
         friendEmail: email,
         userEmail, // Send the current user's email as context

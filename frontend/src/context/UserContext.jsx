@@ -2,7 +2,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { baseUrl } from '../utils';
+import { API_URL } from '@env';
 
 // Create the context
 export const UserContext = createContext();
@@ -24,7 +24,7 @@ export const UserProvider = ({ children }) => {
           return;
         }
 
-        const response = await axios.get(`${baseUrl}/api/v1/user/getuser`, {
+        const response = await axios.get(`${API_URL}/api/v1/user/getuser`, {
           headers: { 'x-auth-token': token },
         });
         

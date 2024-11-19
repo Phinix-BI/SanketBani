@@ -1,5 +1,6 @@
 import translate from '@iamtraction/google-translate';
 import responseHandler from "../utils/resHandler.js";
+import errorResponseHandler from '../utils/errorResponseHandler.js';
 import axios from 'axios'
  //google api setup
  import vision from '@google-cloud/vision';
@@ -44,6 +45,10 @@ import  fs from "fs";
       const client = new speech.SpeechClient();
       console.log(file);
       let input = file.path || file.url;
+
+      if(file.url){
+        input  = input.path;
+      }
       console.log("Processing audio:", input);
       
       async function quickstart() {
@@ -190,3 +195,21 @@ import  fs from "fs";
 //   const response = await createAudioFileFromText("Hello World");
 //   return {"tet-speech success": response}
 // }
+
+export const IslVideoToText = async (url) => {
+  try {
+   
+    if (!url) {
+        return errorResponseHandler(res, 400, 'error', 'Please upload an image');
+    }
+    
+    // path needs to be changed to the path of the image on the server
+    const apiDataUpload = await axios.post('http://127.0.0.1:8000/predictVideoFromLink', {"url" : url});
+
+    return apiDataUpload.data;
+   
+    
+} catch (error) {
+    return errorResponseHandler(res, 500, 'error', 'Problem uploading ai picture');
+}
+}

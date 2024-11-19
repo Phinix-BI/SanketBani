@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 import GradientButton from '../../components/GradientButton'; 
 import ResetPassTextInput from '../../components/ResetPassTextInput';
 import { GradientBackground, Logo } from '../../components';
@@ -27,7 +27,7 @@ export default function ForgotPassScreen({ navigation, route }) {
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/auth/resetpassword`, {
+      const response = await axios.post(`${API_URL}/api/v1/auth/resetpassword`, {
         email,
         password,
         confirmPassword,

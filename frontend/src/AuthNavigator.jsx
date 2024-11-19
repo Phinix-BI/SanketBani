@@ -11,6 +11,8 @@ function AuthNavigator() {
       headerShown: false,
     }}
   >
+    {/* <Stack.Screen name="GoogleAuthScreen" component={GoogleAuthScreen} /> */}
+
     <Stack.Screen name="LoginScreen" component={LoginScreen} />
     <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
     <Stack.Screen name="ResetPasswordScreen" component={ResetPasswordScreen} />

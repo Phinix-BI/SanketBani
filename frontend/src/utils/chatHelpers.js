@@ -1,11 +1,11 @@
 import axios from 'axios';
 import io from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { baseUrl } from './index';
+import { API_URL } from '@env';
 import DocumentPicker from 'react-native-document-picker';
 import { act } from 'react';
 
-const socket = io(baseUrl);
+const socket = io(API_URL);
 
 export const selectFile = async (setFileResponse, setMessage) => {
   try {
@@ -55,7 +55,7 @@ export const sendMessage = async (message, senderId, recipientId, setMessage , s
 
     try {
       const response = await axios.post(
-        `${baseUrl}/api/v1/sender/upload-media`,
+        `${API_URL}/api/v1/sender/upload-media`,
         formData,
         {
           headers: {
@@ -89,18 +89,18 @@ export const sendMessage = async (message, senderId, recipientId, setMessage , s
  export const fetchUserIds = async (sender, recipient, setSenderId, setRecipientId, setProfilePicture, setChat) => {
     try {
       // Fetch the sender's user ID
-      const senderResponse = await axios.get(`${baseUrl}/api/v1/auth/getUserId/${sender}`);
+      const senderResponse = await axios.get(`${API_URL}/api/v1/auth/getUserId/${sender}`);
       const senderId = senderResponse.data.data.id;
       setSenderId(senderId);
   
       // Fetch the recipient's user ID
-      const recipientResponse = await axios.get(`${baseUrl}/api/v1/auth/getUserId/${recipient}`);
+      const recipientResponse = await axios.get(`${API_URL}/api/v1/auth/getUserId/${recipient}`);
       const recipientId = recipientResponse.data.data.id;
       setRecipientId(recipientId);
   
       // Fetch the recipient's profile picture
       const recipientProfileResponse = await axios.get(
-        `${baseUrl}/api/v1/user/getProfilePicture/${recipientId}`,
+        `${API_URL}/api/v1/user/getProfilePicture/${recipientId}`,
         {
           headers: {
             'x-auth-token': await AsyncStorage.getItem('token'),
@@ -112,7 +112,7 @@ export const sendMessage = async (message, senderId, recipientId, setMessage , s
       // Fetch the chat messages
       try {
         const messagesResponse = await axios.get(
-          `${baseUrl}/api/v1/chat/messages/${senderId}/${recipientId}`,
+          `${API_URL}/api/v1/chat/messages/${senderId}/${recipientId}`,
         );
         const messages = messagesResponse.data.data.messages;
         setChat(messages.length !== 0 ? messages : []);

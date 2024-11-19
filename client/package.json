@@ -32,6 +32,7 @@
     "react-native-vector-icons": "^10.1.0",
     "react-native-video": "^6.4.5",
     "react-native-vision-camera": "^4.5.2",
+    "react-native-webview": "^13.12.3",
     "toastify-react-native": "^5.0.0"
   },
   "devDependencies": {

@@ -3,10 +3,11 @@ import { View, Text, Image, TouchableOpacity, ScrollView, StyleSheet, StatusBar 
 import { CommonActions } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { baseUrl } from '../utils';
+import { API_URL } from '@env';
 import axios from 'axios';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DocumentPicker from 'react-native-document-picker';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const ProfileScreen = ({ navigation }) => {
   const [userDetails, setUserDetails] = useState({
@@ -43,7 +44,7 @@ const ProfileScreen = ({ navigation }) => {
         return navigation.navigate('LoginScreen');
       }
   
-      const response = await axios.get(`${baseUrl}/api/v1/user/getuser`, {
+      const response = await axios.get(`${API_URL}/api/v1/user/getuser`, {
         headers: {
           'x-auth-token': token
         }
@@ -74,7 +75,7 @@ const ProfileScreen = ({ navigation }) => {
         name: selectedImage.name,
       });
 
-      const response = await axios.post(`${baseUrl}/api/v1/user/upload-profile-picture`, formData , {
+      const response = await axios.post(`${API_URL}/api/v1/user/upload-profile-picture`, formData , {
         headers: {
           'Content-Type': 'multipart/form-data',
           'x-auth-token': token,
@@ -116,15 +117,17 @@ const ProfileScreen = ({ navigation }) => {
   };
 
   
-  const handleLogout = () => {
+  const handleLogout = async () => {
     Toast.show({
       type: 'success',
       text1: 'Logged out successfully',
       visibilityTime: 3000,
       autoHide: true,
     });
-
-    AsyncStorage.removeItem('token');
+    // await GoogleSignin.revokeAccess(); Optional: Revokes access so the user sees consent screen on re-login
+    await GoogleSignin.signOut();
+    
+    await AsyncStorage.removeItem('token');
     // Reset navigation and go to LoginScreen in the Auth stack
     navigation.dispatch(
       CommonActions.reset({

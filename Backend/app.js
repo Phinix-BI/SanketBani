@@ -11,6 +11,7 @@ import friendListRoutes from './src/routes/friendListRoutes.js';
 import mediaUploadRoutes from './src/routes/mediaUploadRoutes.js';
 import fileServicesRoutes from './src/routes/fileServicesRoutes.js'
 import aiSequenceRoutes from './src/routes/aiSequenceRoutes.js';
+import animationHandlerRoutes from './src/routes/animationHandlerRoutes.js';
 import { v2 as cloudinary } from 'cloudinary';
 import { speechToText } from './src/helpers/fileServicesHandler.js';
 
@@ -22,7 +23,7 @@ app.use(bodyParser.json());
 app.use( bodyParser.urlencoded({extended: true}));
 app.use(cors({
     origin: '*'
-})); // Allow all CORS requests
+})); 
 
 app.use('/uploads', express.static('uploads'));
 
@@ -34,6 +35,7 @@ app.use('/api/v1/friend', friendListRoutes);
 app.use('/api/v1/sender' , mediaUploadRoutes);
 app.use('/api/v1/service/file' , fileServicesRoutes);
 app.use('/api/v1/ai', aiSequenceRoutes);
+app.use('/api/v1/animation', animationHandlerRoutes);
 
 connectDB();
 

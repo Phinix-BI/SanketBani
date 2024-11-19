@@ -5,10 +5,10 @@ import AudioRecorderPlayer from 'react-native-audio-recorder-player';
 import axios from 'axios';
 import io from 'socket.io-client';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { baseUrl } from '../utils/index';
+import { API_URL } from '@env';
 import RNFS from 'react-native-fs';
 
-const socket = io(baseUrl);
+const socket = io(API_URL);
 
 const audioRecorderPlayer = new AudioRecorderPlayer();
 
@@ -83,14 +83,15 @@ const MessageInput = ({
 
     try {
       const response = await axios.post(
-        `${baseUrl}/api/v1/sender/upload-media`,
+        `${API_URL}/api/v1/sender/upload-media`,
         formData,
         { 
           headers: {
             'Content-Type': 'multipart/form-data',
             'x-auth-token': await AsyncStorage.getItem('token'),
           },
-        },
+          timeout: 10000, // Increase timeout to 10 seconds
+        }
       );
 
       const messageObject = {

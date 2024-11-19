@@ -9,6 +9,9 @@ import {
   Platform,
 } from 'react-native';
 import Toast from 'react-native-toast-message';
+import axios from 'axios'
+import { API_URL } from '@env';
+
 import axios from 'axios';
 import {baseUrl} from '../../utils';
 import GradientButton from '../../components/GradientButton';
@@ -40,8 +43,8 @@ export default function RegisterScreen({navigation}) {
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/auth/register`, {
-        fullName: name,
+     const response = await axios.post(`${API_URL}/api/v1/auth/register` ,{
+        fullName : name,
         email,
         password,
         gender,

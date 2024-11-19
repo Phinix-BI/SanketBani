@@ -10,7 +10,7 @@ import {
   Animated,
 } from 'react-native';
 import io from 'socket.io-client';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 import MessageInput from '../../components/MessageInput';
 import {
   selectFile,
@@ -35,7 +35,7 @@ import {
 } from 'react-native-webrtc';
 import {IncomingCallScreen , OutgoingCallScreen , WebrtcRoomScreen} from '../index'
 
-const socket = io(baseUrl);
+const socket = io(API_URL);
 
 const ChatScreen = ({navigation, route}) => {
   const otherUserId = useRef(null); // State to hold the other user's id

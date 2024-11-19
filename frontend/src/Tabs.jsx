@@ -4,6 +4,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import TranslatorNavigator from './TranslatorNavigator';
 import ChatingNavigator from './ChatingNavigator';
 import ProfileScreen from './screens/ProfileScreen';
+import GoogleAuthScreen from './screens/AuthScreens/GoogleAuthScreen';
+import Testing from './screens/Testing';
+
 
 
 const Tab = createBottomTabNavigator();
@@ -28,7 +31,7 @@ function Tabs() {
         name="Translator"
         component={TranslatorNavigator}
         options={{
-          tabBarLabel: 'Chats',
+          tabBarLabel: 'Translator',
           tabBarIcon: ({color, size}) => (
             // <View>
               <MaterialIcons name="translate" color={color} size={size} />
@@ -56,7 +59,7 @@ function Tabs() {
         name="Call"
         component={ChatingNavigator}
         options={({route}) => ({
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Chats',
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="phone" color={color} size={size} />
           ),
@@ -66,9 +69,10 @@ function Tabs() {
       />
       <Tab.Screen
         name="Account"
-        component={ProfileScreen}
+        // component={ProfileScreen}
+        component={Testing}
         options={{
-          tabBarLabel: 'Communities',
+          tabBarLabel: 'Account',
           tabBarIcon: ({color, size}) => (
             <MaterialIcons name="account-circle" color={color} size={size} />
           ),

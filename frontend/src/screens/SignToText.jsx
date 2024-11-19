@@ -1,9 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StatusBar, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
-import { Camera, useCameraDevice } from 'react-native-vision-camera';
+import { Camera, useCameraDevice, useFrameProcessor } from 'react-native-vision-camera';
 import BackButton from '../components/BackButton';
-import { baseUrl } from '../utils';
+import { API_URL } from '@env';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {io} from 'socket.io-client';
+import ImageResizer from 'react-native-image-resizer';
+
+
+const socket = io(API_URL);
 
 
 export default function SignToText({ navigation }) {
@@ -18,10 +23,20 @@ export default function SignToText({ navigation }) {
 
   useEffect(() => {
     checkPermission();
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from server');
+    });
+
     
     return () => {
       // This will run when navigating away or unmounting the component
       stopCamera();
+      socket.disconnect();
     };
   }, []);
 
@@ -47,6 +62,41 @@ export default function SignToText({ navigation }) {
     sendImageToBackend(image.path);
   };
 
+
+  // const frameProcessor = useFrameProcessor((frame) => {
+  //   // Convert frame to JPEG or WebP here
+  //   console.log('Frame captured:', frame);
+  //   // const compressedImage = convertFrameToCompressedFormat(frame.path, ' JPEG'); // Assume this function handles conversion
+
+  //   // if(compressedImage){
+  //     socket.emit("realTimeVideoFromFrontend", frame);
+  //   // }
+
+  // }, []);
+
+  // const convertFrameToCompressedFormat = async(frameUri, format = 'JPEG') => {
+  //   // Convert the frame to the desired format (JPEG or WebP)
+  //   // Return the compressed image data
+  //   try {
+  //     // Adjust width and height according to your requirements
+  //     const quality = 70; // JPEG quality percentage (0-100)
+  
+  //     // Compress the frame to the specified format (JPEG) with the desired width, height, and quality
+  //     const compressedFrame = await ImageResizer.createResizedImage(
+  //       frameUri,    // URI of the frame to be compressed
+  //       format,      // Format, e.g., 'JPEG' or 'PNG'
+  //       quality      // Quality (for JPEG only; ignored for PNG)
+  //     );
+  
+  //     // compressedFrame.uri is the URI of the compressed image
+  //     return compressedFrame.uri;  // Return the compressed frame URI for transmission
+  
+  //   } catch (error) {
+  //     console.error("Error compressing frame:", error);
+  //     return null;
+  //   }
+  // };
+
   const sendImageToBackend = async (imagePath) => {
     setLoading(true); // Show loading indicator
     const formData = new FormData();
@@ -57,7 +107,7 @@ export default function SignToText({ navigation }) {
     });
 
     try {
-      const response = await fetch(`${baseUrl}/api/v1/ai/upload/sendimageai`, {
+      const response = await fetch(`${API_URL}/api/v1/ai/upload/sendimageai`, {
         method: 'POST',
         body: formData,
         headers: {

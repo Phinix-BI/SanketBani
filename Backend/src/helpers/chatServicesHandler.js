@@ -1,4 +1,4 @@
-import {textTranslate , speechToText as sTt , imgToText} from './fileServicesHandler.js';
+import {textTranslate , speechToText as sTt , imgToText , IslVideoToText} from './fileServicesHandler.js';
 import { sequenceGen } from './aiSequenceHandler.js';
 
 export async function chatServicesHandler(userId, message, mediaUrl, selectedService) {
@@ -82,9 +82,8 @@ export async function chatServicesHandler(userId, message, mediaUrl, selectedSer
                 }
 
                 if (selectedService === 'IslVideoToText') {
-                    // result = await IslVideoToText(url);
-                    // result_type = 'text';
-                    console.log('ISLVideoToText service is not available');
+                    result = await IslVideoToText(url);
+                    result_type = 'text';
                 } else if (selectedService === 'IslVideoToVoice') {
                     // result = await IslVideoToVoice(url);
                     // result_type = 'audio';
@@ -100,7 +99,7 @@ export async function chatServicesHandler(userId, message, mediaUrl, selectedSer
     return {result, result_type};
 }
 
-const textToIsl = async (text) => {
+export const textToIsl = async (text) => {
     // Implement text to ISL conversion
     try {
       const response = await textTranslate(text);
@@ -114,7 +113,7 @@ const textToIsl = async (text) => {
     }
   };
   
-const imgToIsl = async (url) => {
+export const imgToIsl = async (url) => {
     try {
       // Step 1: Convert image to text
       const response = await imgToText(url);
@@ -152,7 +151,7 @@ const speechToText = async (url,ln='en') => {
     }
   }
 
-const speechToIsl = async (url) => {
+export const speechToIsl = async (url) => {
     try {
       // Step 1: Convert speech to text
       const response = await speechToText(url);

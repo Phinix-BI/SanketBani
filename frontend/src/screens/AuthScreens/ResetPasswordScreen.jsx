@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { emailValidator } from '../../helpers/emailValidator';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
-import { baseUrl } from '../../utils';
+import { API_URL } from '@env';
 import GradientResetPassButton from '../../components/GradientResetPassButton'; 
 import ResetPassTextInput from '../../components/ResetPassTextInput';
 import { GradientBackground, GradientButton } from '../../components';
@@ -27,7 +27,7 @@ export default function ResetPasswordScreen({ navigation }) {
     }
 
     try {
-      const response = await axios.post(`${baseUrl}/api/v1/auth/sentotp`, {
+      const response = await axios.post(`${API_URL}/api/v1/auth/sentotp`, {
         email,
       });
 
