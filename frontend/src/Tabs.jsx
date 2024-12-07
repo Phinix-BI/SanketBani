@@ -69,8 +69,8 @@ function Tabs() {
       />
       <Tab.Screen
         name="Account"
-        // component={ProfileScreen}
-        component={Testing}
+        component={ProfileScreen}
+        // component={Testing}
         options={{
           tabBarLabel: 'Account',
           tabBarIcon: ({color, size}) => (

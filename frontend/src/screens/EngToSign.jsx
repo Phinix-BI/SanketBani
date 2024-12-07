@@ -1,4 +1,5 @@
 import React, { useState, useRef, Suspense } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   View,
   Image,
@@ -215,11 +216,13 @@ const EngToSign = ({ navigation }) => {
       );
     }
 
-      console.log(response.data);
-      setSequence(response.data);
+      console.log(response.data.message);
+      const parsedSequence = JSON.parse(response.data.message);
+      setSequence(parsedSequence);
 
       setIsLoading(false);
       
+      console.log('Sequence: ', sequence);
     } catch (err) {
       console.log(err);
     }
@@ -230,6 +233,14 @@ const EngToSign = ({ navigation }) => {
     setIsFile(false);
     setTranslationText('');
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setSequence([]);
+      };
+    }, []),
+  );
 
   return (
     <View className="flex-1" style={{backgroundColor: '#E5E4E2'}}>
@@ -262,7 +273,7 @@ const EngToSign = ({ navigation }) => {
             />
             <Suspense fallback={null}>
               <ambientLight intensity={2} />
-              <Character sequence={sequence}/>
+              <Character animationSequence={sequence}/>
             </Suspense>
           </Canvas>
         </View>
