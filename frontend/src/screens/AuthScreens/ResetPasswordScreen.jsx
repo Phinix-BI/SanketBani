@@ -63,7 +63,7 @@ export default function ResetPasswordScreen({ navigation }) {
         text1: 'Email sent',
         text2: 'Please check your inbox',
         position: 'bottom',
-        visibilityTime: 3000,
+        visibilityTime: 1000,
         swipeable: true,
         onHide: () => navigation.navigate('EnterOtpScreen', { email: email.value }),
       });
@@ -87,7 +87,7 @@ export default function ResetPasswordScreen({ navigation }) {
     
       {/* Back button */}
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="#fff" />
+        <Icon name="chevron-back-outline" size={24} color="#fff" />
       </TouchableOpacity>
 
       {/* Header text */}

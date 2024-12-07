@@ -10,7 +10,7 @@ import errorResponseHandler from "../utils/errorResponseHandler.js";
 
 export const registerUser = async (req, res) => {
 
-    const { fullName, email, password } = req.body;
+    const { fullName, email, password , dob , gender , personType } = req.body;
 
     if (!fullName || !email || !password) {
         return errorResponseHandler(res, 400, "error", "Please fill in all fields");
@@ -31,6 +31,8 @@ export const registerUser = async (req, res) => {
             fullName,
             userName,
             email,
+            gender,
+            category : personType,
             password: hashedPassword
 
         });
@@ -213,6 +215,8 @@ export const resetPassword = async (req, res) => {
 
     const { email, otp, password, confirmPassword } = req.body;
 
+    console.log(email , otp , password , confirmPassword);
+
     if (!email || !otp || !password || !confirmPassword) {
         return errorResponseHandler(res, 400, "error", "Please fill in all fields");
     }
@@ -272,14 +276,15 @@ export const verifyEmail = async (req, res) => {
             return errorResponseHandler(res, 400, "error", "User does not exist");
         }
 
-        if (user.isVerified) {
-            return errorResponseHandler(res, 400, "error", "User already verified");
-        }
-
+        
         const response = await verifyOtp({ email, otp });
 
         if (response.status === "error") {
             return errorResponseHandler(res, 400, "error", response.message);
+        }
+
+        if(user.isVerified){
+            return responseHandler(res, 200, "success", "otp verified successfully");
         }
 
         user.isVerified = true;

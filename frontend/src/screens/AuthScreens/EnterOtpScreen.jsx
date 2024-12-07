@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import { API_URL } from '@env';
-import GradientButton from '../../components/GradientButton';
-import { GradientBackground } from '../../components';
+import GradientResetPassButton from '../../components/GradientResetPassButton'; 
+import ResetPassTextInput from '../../components/ResetPassTextInput';
+import { GradientBackground, GradientButton } from '../../components';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const EnterOtpScreen = ({ navigation, route }) => {
@@ -65,6 +66,7 @@ const EnterOtpScreen = ({ navigation, route }) => {
     }
 
     try {
+
       const response = await axios.post(`${API_URL}/api/v1/auth/verifyemail`, {
         email,
         otp: otpString,
@@ -72,7 +74,8 @@ const EnterOtpScreen = ({ navigation, route }) => {
       console.log(response)
 
       if (response.data.statusCode === 200) {
-        navigation.navigate('ForgotPassScreen'); // Changing to the next screen
+        console.log("otp is" , otpString);
+        navigation.navigate('ForgotPassScreen',{ email: email , otp : otpString}); // Changing to the next screen
       } else {
         Toast.show({
           type: 'error',
@@ -120,7 +123,7 @@ const EnterOtpScreen = ({ navigation, route }) => {
       <GradientBackground />
       
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back" size={24} color="#fff" />
+        <Ionicons name="chevron-back-outline" size={24} color="#fff" />
       </TouchableOpacity>
 
       <View style={styles.headerContainer}>

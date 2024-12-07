@@ -11,9 +11,6 @@ import {
 import Toast from 'react-native-toast-message';
 import axios from 'axios'
 import { API_URL } from '@env';
-
-import axios from 'axios';
-import {baseUrl} from '../../utils';
 import GradientButton from '../../components/GradientButton';
 import ResetPassTextInput from '../../components/ResetPassTextInput';
 import {GradientBackground} from '../../components';
@@ -29,7 +26,44 @@ export default function RegisterScreen({navigation}) {
   const [personType, setPersonType] = useState('');
   const [showPicker, setShowPicker] = useState(false);
 
-  const handleRegister = async ({name, email, password}) => {
+  const handleOtpSent = async ({ email }) => {
+    // Validate input
+    if (!email) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid input',
+        text2: 'Please fill in all fields',
+        position: 'bottom',
+        visibilityTime: 3000,
+        swipeable: true,
+      });
+      return;
+    }
+  
+    try {
+      const response = await axios.post(`${API_URL}/api/v1/auth/sentotp`, {
+        email,
+      });
+      
+      return response.data.statusCode;
+    } catch (error) {
+      console.error('Otp sending Error:', error.message); // Improved error logging
+      console.log(error);
+      
+      Toast.show({
+        type: 'error',
+        text1: 'Otp sending failed', // Show error title
+        text2: error.response?.data?.message || 'Something went wrong!', // Show error details
+        position: 'bottom',
+        visibilityTime: 3000,
+        swipeable: true,
+      });
+  
+      return error.response?.data;
+  };
+  };
+
+  const handleRegister = async ({name, email, password , gender , dob , personType}) => {
     if (!name || !email || !password || !gender || !dob || !personType) {
       Toast.show({
         type: 'error',
@@ -71,7 +105,10 @@ export default function RegisterScreen({navigation}) {
     const response = await handleRegister({
       name: name.value,
       email: email.value,
-      password: password.value,
+      password: password.value, 
+      dob: dob,
+      personType: personType,
+      gender : gender
     });
 
     if (response === 200) {
@@ -83,6 +120,28 @@ export default function RegisterScreen({navigation}) {
         visibilityTime: 3000,
         swipeable: true,
       });
+
+      const responseOtp = await handleOtpSent({email: email.value});
+      if (responseOtp === 200) {
+      Toast.show({
+        type: 'success',
+        text1: 'OTP sent',
+        text2: 'OTP sent successfully',
+        position: 'bottom',
+        visibilityTime: 1000,
+        swipeable: true,
+        
+      });
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'OTP sending failed',
+        text2: 'Something went wrong!',
+        position: 'bottom',
+        visibilityTime: 3000,
+        swipeable: true,
+      });
+    }
       navigation.navigate('VerifyAccountScreen', {email: email.value});
     }
   };
@@ -101,12 +160,12 @@ export default function RegisterScreen({navigation}) {
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.replace('LoginScreen')}>
-        <Ionicons name="arrow-back" size={24} color="#fff" />
+        <Ionicons name="chevron-back-outline" size={24} color="#fff" />
       </TouchableOpacity>
 
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
-        keyboardShouldPersistTaps="handled">
+        keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
         <View style={styles.headerContainer}>
           <Text style={styles.whiteText}>Create </Text>
           <Text style={styles.yellowText}>Account</Text>
@@ -265,6 +324,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     paddingBottom: 100,
+  
   },
   backButton: {
     position: 'absolute',
@@ -301,6 +361,7 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: 20,
+    marginBottom: 20,
   },
   label: {
     fontWeight: 'bold',

@@ -21,11 +21,11 @@ const userSchema = new mongoose.Schema({
     },
     gender :{
         type : String,
-        enum : ["Male","Feamle","Other"]
+
     },
     category : {
         type : String,
-        enum: ["Deaf", "Dumb"]
+
     },
     createdAt: {
         type: Date,

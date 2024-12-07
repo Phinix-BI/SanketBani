@@ -11,9 +11,9 @@ import { GradientBackground, Logo } from '../../components';
 export default function ForgotPassScreen({ navigation, route }) {
   const [password, setPassword] = useState({ value: '', error: '' });
   const [confirmPassword, setConfirmPassword] = useState({ value: '', error: '' });
-  const { email } = route.params;
-
-  const handlePasswordReset = async ({ email, password, confirmPassword }) => {
+  const { email , otp } = route.params;
+  
+  const handlePasswordReset = async ({ email,otp, password, confirmPassword }) => {
     if (!password || !confirmPassword) {
       Toast.show({
         type: 'error',
@@ -29,6 +29,7 @@ export default function ForgotPassScreen({ navigation, route }) {
     try {
       const response = await axios.post(`${API_URL}/api/v1/auth/resetpassword`, {
         email,
+        otp,
         password,
         confirmPassword,
       });
@@ -47,7 +48,7 @@ export default function ForgotPassScreen({ navigation, route }) {
   };
 
   const sendResetPasswordEmail = async () => {
-    const response = await handlePasswordReset({ email, password: password.value, confirmPassword: confirmPassword.value });
+    const response = await handlePasswordReset({ email, otp, password: password.value, confirmPassword: confirmPassword.value });
     
     if (response === 200) {
       Toast.show({
@@ -60,6 +61,7 @@ export default function ForgotPassScreen({ navigation, route }) {
         onHide: () => navigation.navigate('LoginScreen'),
       });
     } else {
+      console.log(response);
       Toast.show({
         type: 'error',
         text1: 'Password reset failed',
@@ -76,7 +78,7 @@ export default function ForgotPassScreen({ navigation, route }) {
       <GradientBackground/>
       
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-        <Icon name="arrow-back" size={24} color="#fff" />
+        <Icon name="chevron-back-outline" size={24} color="#fff" />
       </TouchableOpacity>
 
       <View style={styles.headerContainer}>

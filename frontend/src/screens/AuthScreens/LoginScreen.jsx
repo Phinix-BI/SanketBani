@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { TouchableOpacity, StyleSheet, View } from 'react-native'
+import { TouchableOpacity, StyleSheet, View , KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard,} from 'react-native'
 import { Text } from 'react-native-paper'
 import {Background , Logo, Header, Button, TextInput , LoginIcons} from '../../components'
 import { theme } from '../../core/theme'
@@ -12,6 +12,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { UserContext } from '../../context/UserContext'; // Import UserContext
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import GradientResetPassButton from '../../components/GradientResetPassButton'; 
+import ResetPassTextInput from '../../components/ResetPassTextInput';
+import { GradientBackground, GradientButton } from '../../components';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 GoogleSignin.configure({
   webClientId: '13700200648-nrcmepkts63h3r4teapaoco467vppvgh.apps.googleusercontent.com', 
@@ -25,6 +30,7 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState({ value: '', error: '' })
   const [password, setPassword] = useState({ value: '', error: '' })
   const {setUserEmail} = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async ({ email, password }) => {
     // Validate input
@@ -168,73 +174,156 @@ const GoogleSignIn = async () => {
   }
 };
 
+
   return (
-    <Background>
-      <Logo />
-      <Header>Welcome back.</Header>
-      <TextInput
-        label="Email"
-        returnKeyType="next"
+    
+    <View style={styles.container}>
+      {/* Top gradient for the status bar */}
+      <GradientBackground/>
+    
+      {/* Back button */}
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <Icon name="chevron-back-outline" size={24} color="#fff" />
+      </TouchableOpacity>
+
+      {/* Header text */}
+      <View style={styles.headerContainer}>
+        <Text style={styles.whiteText}>Sign In</Text>
+        <View className="flex-row gap-3">
+            <Text style={styles.whiteText}>to</Text>
+            <Text style={styles.yellowText}>Sanket Bani</Text>
+        </View>
+        
+      </View>
+
+
+      {/* Email input field */}
+      <ResetPassTextInput
+        label="E-mail address"
+        returnKeyType="done"
         value={email.value}
         onChangeText={(text) => setEmail({ value: text, error: '' })}
         error={!!email.error}
         errorText={email.error}
+        autoLowerCase={true}
         autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
         keyboardType="email-address"
+        style={styles.textInput}
       />
-      <TextInput
+
+      <ResetPassTextInput
         label="Password"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: '' })}
         error={!!password.error}
         errorText={password.error}
+        autoCapitalize="none"
+        autoCompleteType="password"
+        textContentType="password"
+        keyboardType="default"
         secureTextEntry
+        style={styles.textInput}
+
       />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ResetPasswordScreen')}
-        >
-          <Text style={styles.forgot}>Forgot password?</Text>
-        </TouchableOpacity>
+
+      {/* Informative text */}
+      <Text onPress={()=> navigation.navigate('ResetPasswordScreen')} style={styles.notifyinfoText}>
+        Forgot Password?
+      </Text>
+      
+      {/* Reset button and footer */}
+      <View className="mt-12">
+        <View className="mb-2 h-[70]">
+
+        <GradientButton onPress={onLoginPressed} text="Countinue"  />
+        </View>
+        <Text style={styles.footerText1} > OR </Text>
+        <View className="mt-2 h-[70]"> 
+          <GradientButton onPress={GoogleSignIn} text="Continue With Google" />
+        </View>
+        <Text style={styles.footerText1}>
+        Don’t have an account?&nbsp;
+          <Text style={styles.link1} onPress={() => navigation.replace('RegisterScreen')}>Sign up</Text>
+        </Text>
       </View>
-      <Button mode="contained" onPress={onLoginPressed}>
-        Login
-      </Button>
-      {/* <LoginIcons /> */}
-      <View style={styles.row}>
-        <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
-          <Text style={styles.link}>Sign up</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <TouchableOpacity onPress={GoogleSignIn}>
-          <MaterialIcons name="sports-esports" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-    </Background>
+    </View>
+  
   )
 }
 
 const styles = StyleSheet.create({
-  forgotPassword: {
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+    justifyContent: 'flex-start',
+    padding: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 16,
+  },
+  headerContainer: {
+    
+    marginTop: 54,
+    marginBottom: 10,
+  },
+  whiteText: {
+    color: '#fff',
+    fontSize: 48,
+    fontWeight: 'bold',
+  },
+  yellowText: {
+    color: '#FFE70A',
+    fontSize: 48,
+    fontWeight: 'bold',
+  },
+  textInput: {
+    backgroundColor: '#000',
     width: '100%',
-    alignItems: 'flex-end',
+    marginBottom: -6,
+  },
+  infoText: {
+    fontSize: 15,
+    color: '#fff',
+    alignSelf: 'flex-start',
+    paddingRight: 66,
     marginBottom: 15,
   },
-  row: {
-    flexDirection: 'row',
-    marginTop: 4,
+  notifyinfoText: {
+    fontSize: 12,
+    color: '#E5E4E2',
+    alignSelf: 'flex-end',
+    marginBottom: 20,
+    marginRight: 5,
   },
-  forgot: {
-    fontSize: 13,
-    color: theme.colors.secondary,
+  footerContainer: {
+    
   },
-  link: {
+  footerText: {
+    fontSize: 12,
+    color: '#fff',
+    textAlign: 'center',
+    margin: 7,
+  },
+  assistanceText: {
+    color: '#FFE70A', 
+  },
+  footerText1: {
+    color: '#808080',
+    marginVertical : 3,
+    textAlign: 'center',
+  },
+  link1: {
     fontWeight: 'bold',
-    color: theme.colors.primary,
+    color: '#FFE70A',
+    marginBottom: 3,
+  },
+  button: {
+    height: 50,
+    width: '100%',
   },
 });
