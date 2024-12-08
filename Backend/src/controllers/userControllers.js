@@ -152,6 +152,8 @@ export const sentOtp = async (req, res) => {
         otpExpire.setMinutes(otpExpire.getMinutes() + 10);
 
         const response = await User.updateOne({ email: email }, { otp: otp, otpExpire: otpExpire });
+        const findName = await User.findOne({ email: email });
+        
 
         const transporter = nodemailer.createTransport({
             service: 'gmail',
@@ -165,7 +167,110 @@ export const sentOtp = async (req, res) => {
             from: process.env.EMAIL,
             to: email,
             subject: 'OTP for password reset',
-            html: `<h3>OTP for password reset is </h3><h1 style="font-weight:bold">${otp}</h1>`
+            html: `
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>OTP Verification - SanketBani</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f4f4f4;
+                    color: #333;
+                }
+                .email-container {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background-color: #fff;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+                .header {
+                    text-align: center;
+                    padding-bottom: 20px;
+                }
+                .header img {
+                    width: 120px;
+                }
+                .content {
+                    margin-bottom: 30px;
+                }
+                .content p {
+                    font-size: 16px;
+                    line-height: 1.6;
+                    margin-bottom: 10px;
+                }
+                .otp-container {
+                    background-color: #EFEFEF;
+                    padding: 15px;
+                    text-align: center;
+                    font-size: 20px;
+                    font-weight: bold;
+                    border-radius: 5px;
+                }
+                .footer {
+                    text-align: center;
+                    font-size: 14px;
+                    color: #777;
+                }
+                .footer a {
+                    color: #FFE70A;
+                    text-decoration: none;
+                }
+                .developer-info {
+                    margin-top: 30px;
+                    font-size: 14px;
+                    text-align: center;
+                    color: #555;
+                }
+                .developer-info a {
+                    color: #FFE70A;
+                    text-decoration: none;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="email-container">
+                <div class="header">
+                    <img src="https://res.cloudinary.com/dpcor2qvh/image/upload/v1733587758/applogo3_lglvnk.png" alt="SanketBani Logo">
+                    <h2>Account Verification OTP</h2>
+                </div>
+                
+                <div class="content">
+                    <p>Hello, ${findName.fullName}</p>
+                    <p>Thank you for using SanketBani! We have received a request to reset your password. To proceed, please use the following One-Time Password (OTP):</p>
+                    
+                    <div class="otp-container">
+                        ${otp} <!-- This dynamically inserts the OTP -->
+                    </div>
+                    
+                    <p>If you did not request this, please ignore this email or contact support immediately.</p>
+                    <p>This OTP is valid for 10 minutes only.</p>
+                </div>
+                
+                <div class="footer">
+                    <p>Need assistance? Contact us at: <a href="mailto:thedeveloperguy23@gmail.com">thedeveloperguy23@gmail.com</a></p>
+                </div>
+
+                <div class="developer-info">
+                    <p>App developed by:</p>
+                    <p>
+                        <strong>Biswajit Dey</strong> (Full Stack) | <a href="https://github.com/Phinix-BI">GitHub</a><br>
+                        <strong>Rajdeep Paul</strong> (Backend) | <a href="https://github.com/Rajdeep05-Web">GitHub</a><br>
+                        <strong>Sayan Majumder</strong> (Frontend) | <a href="https://github.com/sayan-majumder-github">GitHub</a><br>
+                        <strong>Rishit Chakraborty</strong> (AI/ML) | <a href="https://github.com/recursioncat">GitHub</a><br>
+                    </p>
+                    <p>Follow us on Instagram: <a href="https://instagram.com/_thedeveloperguy">_thedeveloperguy</a></p>
+                    <p>Phinix-BI | SanketBani</p>
+                </div>
+            </div>
+        </body>
+        </html>`
         };
 
         const result = await transporter.sendMail(mailOptions);
