@@ -11,16 +11,16 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 const ProfileScreen = ({ navigation }) => {
   const [userDetails, setUserDetails] = useState({
-    fullName: 'Victoria Heard',
-    email: 'heard_j@gmail.com',
-    category : 'Deaf',
-    gender : 'Female',
-    location: 'Antigua',
-    createdAt: 'Jul. 2019',
+    fullName: '',
+    email: '',
+    category : '',
+    gender : '',
+    location: '',
+    createdAt: '',
     profilePicture: null, // Placeholder image
   });
   const [selectedImage, setSelectedImage] = useState(null);
-  const defaultImage = require('../assets/man.jpeg'); // Placeholder image
+  const defaultImage = require('../assets/defAv.jpg'); // Placeholder image
 
   useEffect(() => {
     fetchUserProfile();
@@ -70,9 +70,9 @@ const ProfileScreen = ({ navigation }) => {
 
       const formData = new FormData();
       formData.append('profilePicture',{
-        uri:  selectedImage.uri,
-        type: selectedImage.type,
-        name: selectedImage.name,
+        uri:  file.uri,
+        type: file.type,
+        name: file.name,
       });
 
       const response = await axios.post(`${API_URL}/api/v1/user/upload-profile-picture`, formData , {
@@ -87,13 +87,14 @@ const ProfileScreen = ({ navigation }) => {
         type: 'success',
         text1: 'Profile image updated successfully!',
       });
-
+      setSelectedImage(file);
       setUserDetails((prev) => ({ ...prev, profileImage: { uri: file.uri } }));
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Image upload failed. Please try again.',
       });
+      
       console.log('Error uploading image:', error);
       console.error('Error uploading image:', error.message);
     }
@@ -105,7 +106,6 @@ const ProfileScreen = ({ navigation }) => {
         type: [DocumentPicker.types.images],
       });
 
-      setSelectedImage(result[0]);
       handleImageUpload(result[0]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {

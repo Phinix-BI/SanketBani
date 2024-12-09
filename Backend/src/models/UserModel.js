@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema({
     chatHistory: [String],
     profilePicture: {
         type: String,
-        default: "https://res.cloudinary.com/dj7k9b8ps/image/upload/v1620286627/Profile%20Pictures/default-profile-picture-300x300.jpg"
+        default: "https://res.cloudinary.com/dpcor2qvh/image/upload/v1733758881/default-avatar-icon-of-social-media-user-vector_wpylcd.jpg"
     },
     friendList : [
         {

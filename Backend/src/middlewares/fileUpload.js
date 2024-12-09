@@ -5,14 +5,14 @@ const storage = multer.diskStorage({
     
     destination: (req, file, cb) => {
         if(file.mimetype.startsWith('image/')){
-            cb(null, '../uploads/images/');
+            cb(null, './uploads/images/');
         } else if (file.mimetype.startsWith('audio/')) {
-            cb(null, '../uploads/audios/');
+            cb(null, './uploads/audios/');
         } else if (file.mimetype.startsWith('video/')) {
-            cb(null, '../uploads/videos/');
+            cb(null, './uploads/videos/');
         } 
         else {
-            cb(null, '../uploads/others/');
+            cb(null, './uploads/others/');
         }
     },
     filename: (req, file, cb) => {
