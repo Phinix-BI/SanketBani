@@ -34,6 +34,7 @@ import {
   RTCSessionDescription,
 } from 'react-native-webrtc';
 import {IncomingCallScreen , OutgoingCallScreen , WebrtcRoomScreen} from '../index'
+import InCallManager from 'react-native-incall-manager';
 
 const socket = io(API_URL);
 
@@ -159,7 +160,7 @@ const ChatScreen = ({navigation, route}) => {
           processEndCall();
       });
   
-      let isFront = false;
+      let isFront = true;
   
   /*The MediaDevices interface allows you to access connected media inputs such as cameras and microphones. We ask the user for permission to access those media inputs by invoking the mediaDevices.getUserMedia() method. */
       mediaDevices.enumerateDevices().then(sourceInfos => {
@@ -197,6 +198,10 @@ const ChatScreen = ({navigation, route}) => {
           stream.getTracks().forEach(track => {
              peerConnection.current.addTrack(track, stream); // Correct usage of addTrack
            });
+
+           // Start InCallManager and enable speakerphone
+            InCallManager.start({ media: "audio" }); // Start call audio routing
+            InCallManager.setSpeakerphoneOn(true); // Route audio to the main speaker
           })
           .catch(error => {
             // Log error
