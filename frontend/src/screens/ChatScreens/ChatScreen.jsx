@@ -200,8 +200,8 @@ const ChatScreen = ({navigation, route}) => {
            });
 
            // Start InCallManager and enable speakerphone
-            InCallManager.start({ media: "audio" }); // Start call audio routing
-            InCallManager.setSpeakerphoneOn(true); // Route audio to the main speaker
+            // InCallManager.start({ media: "audio" }); // Start call audio routing
+            // InCallManager.setSpeakerphoneOn(true); // Route audio to the main speaker
           })
           .catch(error => {
             // Log error
