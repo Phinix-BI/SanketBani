@@ -168,7 +168,7 @@ ELEVENLABS_API_KEY = "example"
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Phinix-BI/ISL-Recognition
+   git clone https://github.com/Phinix-BI/SanketBani
    ```
 2. Navigate to the project directory:
    ```bash
