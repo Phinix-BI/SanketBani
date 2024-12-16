@@ -214,9 +214,3 @@ For queries, feature requests, or support:
 
 
 
-Email: support@sanketbani.com
-
-Website: www.sanketbani.com
-
-
-
