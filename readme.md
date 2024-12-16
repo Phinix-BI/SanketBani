@@ -1,8 +1,6 @@
-# SanketBani - A ISL SignLanguage based app
+# SanketBani - A ISL SignLanguage-based app
 
-# SanketBani
-
-SanketBani is an innovative application designed to bridge the communication gap between the hearing and speech-impaired communities and those who can hear and speak. It leverages advanced AI and 3D technology to convert text, images, and real-time gestures into Indian Sign Language (ISL) gestures, fostering seamless communication and understanding.
+SanketBani is an innovative application designed to bridge the communication gap between hearing and speech-impaired communities and those who can hear and speak. It leverages advanced AI and 3D technology to convert text, images, and real-time gestures into Indian Sign Language (ISL) gestures, fostering seamless communication and understanding.
 
 ---
 
@@ -11,7 +9,7 @@ SanketBani is an innovative application designed to bridge the communication gap
 ### 1. **Text-to-ISL Conversion**
 
 - Converts any input text into 3D animated Indian Sign Language gestures.
-- Allows users to type or paste text and view the corresponding ISL gestures in real-time.
+- Allows users to type or paste text and view the corresponding ISL gestures in real time.
 
 ### 2. **Image-to-ISL Conversion**
 
@@ -91,8 +89,8 @@ The SanketBani project consists of three main folders:
 - Contains the Python-based model for video gesture recognition.
 - Guides for setup:
   ```bash
-  cd recognition
-  cd videorecognition
+  cd Recognition Model
+  cd Video Recognition
   pip install -r requirements.txt
   python app.py
   ```
@@ -105,14 +103,22 @@ To ensure proper functioning, create `.env` files in both the frontend and backe
 
 ### Frontend `.env` Example
 ```
-API_URL=https://example.com/api
+API_URL=https://example.com/api // your backend url
 ```
 
 ### Backend `.env` Example
 ```
 PORT=5000
-DATABASE_URL=mongodb+srv://user:password@cluster.example.mongodb.net/dbname
+MONGO_URI=mongodb+srv://user:password@cluster.example.mongodb.net/dbname
 JWT_SECRET=your_jwt_secret
+EMAIL = example@example.com
+PASSWORD = "addf ada sdss wdsd" // this is for nodemailer
+CLOUDINARY_CLOUD_NAME = "example"
+CLOUDINARY_API_KEY = "example"
+CLOUDINARY_API_SECRET = "example"
+GOOGLE_APPLICATION_CREDENTIALS = "your json file path"
+GEMINI_API_KEY = "example"
+ELEVENLABS_API_KEY = "example"
 ```
 
 ---
@@ -121,10 +127,10 @@ JWT_SECRET=your_jwt_secret
 
 ### Input Processing
 
-1. User provides input via text, image, or gestures.
+1. The user provides input via text, image, or gestures.
 2. Text is processed to correct grammar and spelling.
-3. If the input matches the dataset, a sequence for ISL gestures is generated.
-4. For new inputs, the AI combines existing gestures or generates a new sequence.
+3. a sequence for ISL gestures is generated if the input matches the dataset.
+4. the AI combines existing gestures or generates a new sequence for new inputs.
 
 ### Output Rendering
 
@@ -135,7 +141,7 @@ JWT_SECRET=your_jwt_secret
 
 ## Use Cases
 
-- **Education:** Helps students learn Indian Sign Language in an interactive way.
+- **Education:** Helps students interactively learn Indian Sign Language.
 - **Accessibility:** Enables hearing and speech-impaired individuals to communicate with those who do not know sign language.
 - **Translation:** Acts as a translator for conversations between different communities.
 - **Awareness:** Promotes ISL adoption and awareness in workplaces, schools, and public spaces.
@@ -162,13 +168,13 @@ JWT_SECRET=your_jwt_secret
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/username/sanketbani.git
+   git clone https://github.com/Phinix-BI/ISL-Recognition
    ```
 2. Navigate to the project directory:
    ```bash
-   cd sanketbani
+   cd ISL-Recognition
    ```
-3. Set up each folder as per the **Folder Structure and Setup** section.
+3. Set up each folder per the **Folder Structure and Setup** section.
 
 ---
 
@@ -180,7 +186,7 @@ JWT_SECRET=your_jwt_secret
 - Additional gesture datasets and animations.
 - Offline functionality for remote areas.
 - Integration with voice recognition for enhanced accessibility.
-
+- real-time gesture conversion on video call
 ---
 
 ## Contributions
@@ -203,8 +209,8 @@ SanketBani is licensed under the MIT License. See the LICENSE file for details.
 
 For queries, feature requests, or support:
 
-- Email: [support@sanketbani.com](mailto:support@sanketbani.com)
-- Website: [www.sanketbani.com](https://www.sanketbani.com)
+- Email: [support@sanketbani.com](mailto:thedeveloperguy23@gmail.com)
+- Website: [www.sanketbani.com](https://sanketbani.vercel.app/)
 
 
 
