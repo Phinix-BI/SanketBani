@@ -48,8 +48,8 @@ SanketBani is an innovative application designed to bridge the communication gap
 
 ### 3. **Recognition Model**
 
-- Python-based video recognition model.
-- **TensorFlow** or similar frameworks for gesture-to-text conversion.
+- **Open CV** and **Mediapipe** used to Extract pose and features from videos.
+- **TensorFlow** and **Python** used for creating and training neural networks.
 
 ---
 
@@ -138,6 +138,37 @@ ELEVENLABS_API_KEY = "example"
 - Animations are displayed in the app’s 3D viewer for users to follow or understand.
 
 ---
+
+## Machine Learning
+
+### Converting Videos into Sentences
+To convert videos into sentences, we built a repository of 15 sentences, as stated below. To convert each video, we used `opencv` and `Mediapipe` to extract the pose and features from the videos and save it into an .npy file. These files were then trained based on an LTSM neural network, as a classification model. Currently the App only supports 15 sentences, but we are working to add more.
+
+```text
+- 'Are you free today' 
+- 'Can you repeat that please'
+- 'Congratulations' 
+- 'Help me please' 
+- 'How are you' 
+- 'I am fine'
+- 'I love you' 
+- 'No' 
+- 'Please come, Welcome' 
+- 'Talk slower please'
+- 'Thank you' 
+- 'What are you doing' 
+- 'What do you do'
+- 'What happened' 
+- 'Yes'
+```
+
+### Converting Sentences into 3D Animations
+Currently this is done by using an API with a Large Language Model, where the classification task is passed as the context. We are working to make an embedded and lightweight sentence classification solution, that maps our sentences to animation data.
+
+### Additional Resources
+[DataSet]() <br>
+[Recognition Model](https://github.com/recursioncat/Abhaya---Gesture-Recognition-with-LTSM)
+
 
 ## Use Cases
 
